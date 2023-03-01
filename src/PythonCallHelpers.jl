@@ -54,21 +54,10 @@ end
 macro pyimmutable(type, field)
     return esc(
         quote
-            # Code from https://github.com/stevengj/PythonPlot.jl/blob/d58f6c4/src/PythonPlot.jl#L65-L72
-            Core.@__doc__ struct $type
+            struct $type
                 $field::Py
             end
-            PythonCall.Py(x::$type) = getfield(x, $field)
-            PythonCall.pyconvert(::Type{$type}, py::Py) = $type(py)
-            Base.:(==)(x::$type, y::$type) = pyconvert(Bool, Py(x) == Py(y))
-            Base.isequal(x::$type, y::$type) = isequal(Py(x), Py(y))
-            Base.hash(x::$type, h::UInt) = hash(Py(x), h)
-            Base.Docs.doc(x::$type) = Base.Docs.Text(pyconvert(String, Py(x).__doc__))
-            # Code from https://github.com/stevengj/PythonPlot.jl/blob/d58f6c4/src/PythonPlot.jl#L75-L80
-            Base.getproperty(x::$type, s::Symbol) = getproperty(Py(x), s)
-            Base.getproperty(x::$type, s::AbstractString) = getproperty(Py(x), Symbol(s))
-            Base.hasproperty(x::$type, s::Symbol) = pyhasattr(Py(x), s)
-            Base.propertynames(x::$type) = propertynames(Py(x))
+            $(pybasic(type, field))
         end,
     )
 end
@@ -76,24 +65,14 @@ end
 macro pymutable(type, field)
     return esc(
         quote
-            # Code from https://github.com/stevengj/PythonPlot.jl/blob/d58f6c4/src/PythonPlot.jl#L65-L72
-            Core.@__doc__ mutable struct $type
+            mutable struct $type
                 $field::Py
             end
-            PythonCall.Py(x::$type) = getfield(x, $field)
-            PythonCall.pyconvert(::Type{$type}, py::Py) = $type(py)
-            Base.:(==)(x::$type, y::$type) = pyconvert(Bool, Py(x) == Py(y))
-            Base.isequal(x::$type, y::$type) = isequal(Py(x), Py(y))
-            Base.hash(x::$type, h::UInt) = hash(Py(x), h)
-            Base.Docs.doc(x::$type) = Base.Docs.Text(pyconvert(String, Py(x).__doc__))
-            # Code from https://github.com/stevengj/PythonPlot.jl/blob/d58f6c4/src/PythonPlot.jl#L75-L80
-            Base.getproperty(x::$type, s::Symbol) = getproperty(Py(x), s)
-            Base.getproperty(x::$type, s::AbstractString) = getproperty(Py(x), Symbol(s))
+            $(pybasic(type, field))
+            # Code from https://github.com/stevengj/PythonPlot.jl/blob/d58f6c4/src/PythonPlot.jl#L77-L78
             Base.setproperty!(x::$type, s::Symbol, v) = setproperty!(Py(x), s, v)
             Base.setproperty!(x::$type, s::AbstractString, v) =
                 setproperty!(Py(x), Symbol(s), v)
-            Base.hasproperty(x::$type, s::Symbol) = pyhasattr(Py(x), s)
-            Base.propertynames(x::$type) = propertynames(Py(x))
         end,
     )
 end
