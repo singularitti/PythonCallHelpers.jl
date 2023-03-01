@@ -7,6 +7,9 @@ export @pyimmutable, @pymutable, @pycallable
 macro pyimmutable(T)
     return quote
         # Code from https://github.com/stevengj/PythonPlot.jl/blob/d58f6c4/src/PythonPlot.jl#L65-L72
+        struct $T
+            o::Py
+        end
         PythonCall.Py(f::$T) = getfield(f, :o)
         PythonCall.pyconvert(::Type{$T}, o::Py) = $T(o)
         Base.:(==)(f::$T, g::$T) = pyconvert(Bool, Py(f) == Py(g))
@@ -24,6 +27,9 @@ end
 macro pymutable(T)
     return quote
         # Code from https://github.com/stevengj/PythonPlot.jl/blob/d58f6c4/src/PythonPlot.jl#L65-L72
+        mutable struct $T
+            o::Py
+        end
         PythonCall.Py(f::$T) = getfield(f, :o)
         PythonCall.pyconvert(::Type{$T}, o::Py) = $T(o)
         Base.:(==)(f::$T, g::$T) = pyconvert(Bool, Py(f) == Py(g))
