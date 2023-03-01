@@ -34,51 +34,49 @@ function Base.Docs.catdoc(helps::LazyHelp...)
 end
 
 # See https://github.com/rafaqz/DimensionalData.jl/blob/4814246/src/Dimensions/dimension.jl#L382-L398
-macro pyimmutable(typename, fieldname)
+macro pyimmutable(type, field)
     return esc(
         quote
             # Code from https://github.com/stevengj/PythonPlot.jl/blob/d58f6c4/src/PythonPlot.jl#L65-L72
-            Core.@__doc__ struct $typename
-                $fieldname::Py
+            Core.@__doc__ struct $type
+                $field::Py
             end
-            PythonCall.Py(x::$typename) = getfield(x, $fieldname)
-            PythonCall.pyconvert(::Type{$typename}, py::Py) = $typename(py)
-            Base.:(==)(x::$typename, y::$typename) = pyconvert(Bool, Py(x) == Py(y))
-            Base.isequal(x::$typename, y::$typename) = isequal(Py(x), Py(y))
-            Base.hash(x::$typename, h::UInt) = hash(Py(x), h)
-            Base.Docs.doc(x::$typename) = Base.Docs.Text(pyconvert(String, Py(x).__doc__))
+            PythonCall.Py(x::$type) = getfield(x, $field)
+            PythonCall.pyconvert(::Type{$type}, py::Py) = $type(py)
+            Base.:(==)(x::$type, y::$type) = pyconvert(Bool, Py(x) == Py(y))
+            Base.isequal(x::$type, y::$type) = isequal(Py(x), Py(y))
+            Base.hash(x::$type, h::UInt) = hash(Py(x), h)
+            Base.Docs.doc(x::$type) = Base.Docs.Text(pyconvert(String, Py(x).__doc__))
             # Code from https://github.com/stevengj/PythonPlot.jl/blob/d58f6c4/src/PythonPlot.jl#L75-L80
-            Base.getproperty(x::$typename, s::Symbol) = getproperty(Py(x), s)
-            Base.getproperty(x::$typename, s::AbstractString) =
-                getproperty(Py(x), Symbol(s))
-            Base.hasproperty(x::$typename, s::Symbol) = pyhasattr(Py(x), s)
-            Base.propertynames(x::$typename) = propertynames(Py(x))
+            Base.getproperty(x::$type, s::Symbol) = getproperty(Py(x), s)
+            Base.getproperty(x::$type, s::AbstractString) = getproperty(Py(x), Symbol(s))
+            Base.hasproperty(x::$type, s::Symbol) = pyhasattr(Py(x), s)
+            Base.propertynames(x::$type) = propertynames(Py(x))
         end,
     )
 end
 
-macro pymutable(typename, fieldname)
+macro pymutable(type, field)
     return esc(
         quote
             # Code from https://github.com/stevengj/PythonPlot.jl/blob/d58f6c4/src/PythonPlot.jl#L65-L72
-            Core.@__doc__ mutable struct $typename
-                $fieldname::Py
+            Core.@__doc__ mutable struct $type
+                $field::Py
             end
-            PythonCall.Py(x::$typename) = getfield(x, $fieldname)
-            PythonCall.pyconvert(::Type{$typename}, py::Py) = $typename(py)
-            Base.:(==)(x::$typename, y::$typename) = pyconvert(Bool, Py(x) == Py(y))
-            Base.isequal(x::$typename, y::$typename) = isequal(Py(x), Py(y))
-            Base.hash(x::$typename, h::UInt) = hash(Py(x), h)
-            Base.Docs.doc(x::$typename) = Base.Docs.Text(pyconvert(String, Py(x).__doc__))
+            PythonCall.Py(x::$type) = getfield(x, $field)
+            PythonCall.pyconvert(::Type{$type}, py::Py) = $type(py)
+            Base.:(==)(x::$type, y::$type) = pyconvert(Bool, Py(x) == Py(y))
+            Base.isequal(x::$type, y::$type) = isequal(Py(x), Py(y))
+            Base.hash(x::$type, h::UInt) = hash(Py(x), h)
+            Base.Docs.doc(x::$type) = Base.Docs.Text(pyconvert(String, Py(x).__doc__))
             # Code from https://github.com/stevengj/PythonPlot.jl/blob/d58f6c4/src/PythonPlot.jl#L75-L80
-            Base.getproperty(x::$typename, s::Symbol) = getproperty(Py(x), s)
-            Base.getproperty(x::$typename, s::AbstractString) =
-                getproperty(Py(x), Symbol(s))
-            Base.setproperty!(x::$typename, s::Symbol, v) = setproperty!(Py(x), s, v)
-            Base.setproperty!(x::$typename, s::AbstractString, v) =
+            Base.getproperty(x::$type, s::Symbol) = getproperty(Py(x), s)
+            Base.getproperty(x::$type, s::AbstractString) = getproperty(Py(x), Symbol(s))
+            Base.setproperty!(x::$type, s::Symbol, v) = setproperty!(Py(x), s, v)
+            Base.setproperty!(x::$type, s::AbstractString, v) =
                 setproperty!(Py(x), Symbol(s), v)
-            Base.hasproperty(x::$typename, s::Symbol) = pyhasattr(Py(x), s)
-            Base.propertynames(x::$typename) = propertynames(Py(x))
+            Base.hasproperty(x::$type, s::Symbol) = pyhasattr(Py(x), s)
+            Base.propertynames(x::$type) = propertynames(Py(x))
         end,
     )
 end
