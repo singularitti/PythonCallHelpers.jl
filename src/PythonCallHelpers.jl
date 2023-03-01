@@ -51,10 +51,10 @@ function pybasic(type, field)
     end
 end
 
-macro pyimmutable(type, field)
+macro pyimmutable(type, supertype=Any, field=:py)
     return esc(
         quote
-            struct $type
+            struct $type <: $supertype
                 $field::Py
             end
             $(pybasic(type, field))
@@ -62,10 +62,10 @@ macro pyimmutable(type, field)
     )
 end
 
-macro pymutable(type, field)
+macro pymutable(type, supertype=Any, field=:py)
     return esc(
         quote
-            mutable struct $type
+            mutable struct $type <: $supertype
                 $field::Py
             end
             $(pybasic(type, field))
