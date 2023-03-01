@@ -3,6 +3,9 @@ uuid = "82926614-86f1-43a3-92dc-771be2bbc0fa"
 authors = ["singularitti <singularitti@outlook.com> and contributors"]
 version = "0.1.0"
 
+[deps]
+PythonCall = "6099a3de-0909-46bc-b1f4-468b9a2dfc0d"
+
 [compat]
 julia = "1"
 
