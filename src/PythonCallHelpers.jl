@@ -4,45 +4,46 @@ using PythonCall: PythonCall, Py, pyhasattr, pyconvert, pycall
 
 export @pyimmutable, @pymutable, @pycallable
 
-macro pyimmutable(T)
+macro pyimmutable(typename, fieldname)
     return quote
         # Code from https://github.com/stevengj/PythonPlot.jl/blob/d58f6c4/src/PythonPlot.jl#L65-L72
-        struct $T
-            o::Py
+        struct $typename
+            $fieldname::Py
         end
-        PythonCall.Py(f::$T) = getfield(f, :o)
-        PythonCall.pyconvert(::Type{$T}, o::Py) = $T(o)
-        Base.:(==)(f::$T, g::$T) = pyconvert(Bool, Py(f) == Py(g))
-        Base.isequal(f::$T, g::$T) = isequal(Py(f), Py(g))
-        Base.hash(f::$T, h::UInt) = hash(Py(f), h)
-        Base.Docs.doc(f::$T) = Base.Docs.Text(pyconvert(String, Py(f).__doc__))
+        PythonCall.Py(x::$typename) = getfield(x, $fieldname)
+        PythonCall.pyconvert(::Type{$typename}, py::Py) = $typename(py)
+        Base.:(==)(x::$typename, y::$typename) = pyconvert(Bool, Py(x) == Py(y))
+        Base.isequal(x::$typename, y::$typename) = isequal(Py(x), Py(y))
+        Base.hash(x::$typename, h::UInt) = hash(Py(x), h)
+        Base.Docs.doc(x::$typename) = Base.Docs.Text(pyconvert(String, Py(x).__doc__))
         # Code from https://github.com/stevengj/PythonPlot.jl/blob/d58f6c4/src/PythonPlot.jl#L75-L80
-        Base.getproperty(f::$T, s::Symbol) = getproperty(Py(f), s)
-        Base.getproperty(f::$T, s::AbstractString) = getproperty(Py(f), Symbol(s))
-        Base.hasproperty(f::$T, s::Symbol) = pyhasattr(Py(f), s)
-        Base.propertynames(f::$T) = propertynames(Py(f))
+        Base.getproperty(x::$typename, s::Symbol) = getproperty(Py(x), s)
+        Base.getproperty(x::$typename, s::AbstractString) = getproperty(Py(x), Symbol(s))
+        Base.hasproperty(x::$typename, s::Symbol) = pyhasattr(Py(x), s)
+        Base.propertynames(x::$typename) = propertynames(Py(x))
     end
 end
 
-macro pymutable(T)
+macro pymutable(typename, fieldname)
     return quote
         # Code from https://github.com/stevengj/PythonPlot.jl/blob/d58f6c4/src/PythonPlot.jl#L65-L72
-        mutable struct $T
-            o::Py
+        mutable struct $typename
+            $fieldname::Py
         end
-        PythonCall.Py(f::$T) = getfield(f, :o)
-        PythonCall.pyconvert(::Type{$T}, o::Py) = $T(o)
-        Base.:(==)(f::$T, g::$T) = pyconvert(Bool, Py(f) == Py(g))
-        Base.isequal(f::$T, g::$T) = isequal(Py(f), Py(g))
-        Base.hash(f::$T, h::UInt) = hash(Py(f), h)
-        Base.Docs.doc(f::$T) = Base.Docs.Text(pyconvert(String, Py(f).__doc__))
+        PythonCall.Py(x::$typename) = getfield(x, $fieldname)
+        PythonCall.pyconvert(::Type{$typename}, py::Py) = $typename(py)
+        Base.:(==)(x::$typename, y::$typename) = pyconvert(Bool, Py(x) == Py(y))
+        Base.isequal(x::$typename, y::$typename) = isequal(Py(x), Py(y))
+        Base.hash(x::$typename, h::UInt) = hash(Py(x), h)
+        Base.Docs.doc(x::$typename) = Base.Docs.Text(pyconvert(String, Py(x).__doc__))
         # Code from https://github.com/stevengj/PythonPlot.jl/blob/d58f6c4/src/PythonPlot.jl#L75-L80
-        Base.getproperty(f::$T, s::Symbol) = getproperty(Py(f), s)
-        Base.getproperty(f::$T, s::AbstractString) = getproperty(Py(f), Symbol(s))
-        Base.setproperty!(f::$T, s::Symbol, x) = setproperty!(Py(f), s, x)
-        Base.setproperty!(f::$T, s::AbstractString, x) = setproperty!(Py(f), Symbol(s), x)
-        Base.hasproperty(f::$T, s::Symbol) = pyhasattr(Py(f), s)
-        Base.propertynames(f::$T) = propertynames(Py(f))
+        Base.getproperty(x::$typename, s::Symbol) = getproperty(Py(x), s)
+        Base.getproperty(x::$typename, s::AbstractString) = getproperty(Py(x), Symbol(s))
+        Base.setproperty!(x::$typename, s::Symbol, v) = setproperty!(Py(x), s, v)
+        Base.setproperty!(x::$typename, s::AbstractString, v) =
+            setproperty!(Py(x), Symbol(s), v)
+        Base.hasproperty(x::$typename, s::Symbol) = pyhasattr(Py(x), s)
+        Base.propertynames(x::$typename) = propertynames(Py(x))
     end
 end
 
