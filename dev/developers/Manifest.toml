@@ -224,7 +224,7 @@ version = "0.9.12"
 
 [[deps.PythonCallHelpers]]
 deps = ["PythonCall"]
-git-tree-sha1 = "a2ebf3464336e88c145452d600490c6de95f5e3c"
+git-tree-sha1 = "127a1c54740a565cf3b0e5d720de28d11b1c9d1f"
 repo-rev = "main"
 repo-url = "https://github.com/singularitti/PythonCallHelpers.jl"
 uuid = "82926614-86f1-43a3-92dc-771be2bbc0fa"
