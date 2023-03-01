@@ -1,8 +1,37 @@
 module PythonCallHelpers
 
-using PythonCall: PythonCall, Py, pyhasattr, pyconvert, pycall
+using PythonCall: PythonCall, Py, pygetattr, pyhasattr, pyconvert, pycall
 
 export @pyimmutable, @pymutable, @pycallable
+
+# Code from https://github.com/stevengj/PythonPlot.jl/blob/d17c1d5/src/PythonPlot.jl#L26-L52
+struct LazyHelp
+    obj::Py
+    keys::Tuple{Vararg{String}}
+    LazyHelp(obj) = new(obj, ())
+    LazyHelp(obj, key::AbstractString) = new(obj, (key,))
+    LazyHelp(obj, key1::AbstractString, key2::AbstractString) = new(obj, (key1, key2))
+    LazyHelp(obj, keys::AbstractString...) = new(obj, keys)
+end
+function Base.show(io::IO, ::MIME"text/plain", help::LazyHelp)
+    obj = help.obj
+    for key in help.keys
+        obj = pygetattr(obj, key)
+    end
+    if pyhasattr(obj, "__doc__")
+        print(io, pyconvert(String, obj.__doc__))
+    else
+        print(io, "no Python docstring found for ", obj)
+    end
+end
+Base.show(io::IO, help::LazyHelp) = show(io, "text/plain", help)
+function Base.Docs.catdoc(helps::LazyHelp...)
+    Base.Docs.Text() do io
+        for help in helps
+            show(io, "text/plain", help)
+        end
+    end
+end
 
 macro pyimmutable(typename, fieldname)
     return quote
