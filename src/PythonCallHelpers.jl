@@ -97,12 +97,12 @@ end
 
 Make an existing type callable.
 """
-macro pycallable(T)
+macro pycallable(type)
     return quote
         using PythonCall: Py
         import PythonCall: pycall
-        pycall(f::$T, args...; kws...) = pycall(Py(f), args...; kws...)
-        (f::$T)(args...; kws...) = pycall(Py(f), args...; kws...)
+        pycall(x::$type, args...; kws...) = pycall(Py(x), args...; kws...)
+        (x::$type)(args...; kws...) = pycall(Py(x), args...; kws...)
     end
 end
 
