@@ -1,6 +1,6 @@
 module PythonCallHelpers
 
-using PythonCall: PythonCall, Py, pygetattr, pyhasattr, pyconvert
+using PythonCall: Py, pygetattr, pyhasattr, pyconvert
 
 export @pyimmutable, @pymutable, @pycallable
 
@@ -36,20 +36,19 @@ end
 # See https://github.com/rafaqz/DimensionalData.jl/blob/4814246/src/Dimensions/dimension.jl#L382-L398
 function pybasic(type, field)
     return quote
+        using PythonCall: pyhasattr
+        import PythonCall: Py, pyconvert
         # Code from https://github.com/stevengj/PythonPlot.jl/blob/d58f6c4/src/PythonPlot.jl#L65-L72
-        PythonCall.Py(x::$type) = getfield(x, $(QuoteNode(Symbol(field))))
-        PythonCall.pyconvert(::Type{$type}, py::PythonCall.Py) = $type(py)
-        Base.:(==)(x::$type, y::$type) =
-            PythonCall.pyconvert(Bool, PythonCall.Py(x) == PythonCall.Py(y))
-        Base.isequal(x::$type, y::$type) = isequal(PythonCall.Py(x), PythonCall.Py(y))
-        Base.hash(x::$type, h::UInt) = hash(PythonCall.Py(x), h)
-        Base.Docs.doc(x::$type) =
-            Text(PythonCall.pyconvert(String, PythonCall.Py(x).__doc__))
+        Py(x::$type) = getfield(x, $(QuoteNode(Symbol(field))))
+        pyconvert(::Type{$type}, py::Py) = $type(py)
+        Base.:(==)(x::$type, y::$type) = pyconvert(Bool, Py(x) == Py(y))
+        Base.isequal(x::$type, y::$type) = isequal(Py(x), Py(y))
+        Base.hash(x::$type, h::UInt) = hash(Py(x), h)
+        Base.Docs.doc(x::$type) = Text(pyconvert(String, Py(x).__doc__))
         # Code from https://github.com/stevengj/PythonPlot.jl/blob/d58f6c4/src/PythonPlot.jl#L75-L80
-        Base.getproperty(x::$type, s::Symbol) = getproperty(PythonCall.Py(x), s)
-        Base.getproperty(x::$type, s::AbstractString) =
-            getproperty(PythonCall.Py(x), Symbol(s))
-        Base.hasproperty(x::$type, s::Symbol) = PythonCall.pyhasattr(PythonCall.Py(x), s)
+        Base.getproperty(x::$type, s::Symbol) = getproperty(Py(x), s)
+        Base.getproperty(x::$type, s::AbstractString) = getproperty(Py(x), Symbol(s))
+        Base.hasproperty(x::$type, s::Symbol) = pyhasattr(Py(x), s)
         Base.propertynames(x::$type) = propertynames(Py(x))
     end
 end
@@ -57,8 +56,9 @@ end
 macro pyimmutable(type, supertype=Any, field=:py)
     return esc(
         quote
+            using PythonCall: Py
             struct $type <: $supertype
-                $field::PythonCall.Py
+                $field::Py
             end
             $(pybasic(type, field))
         end,
@@ -68,15 +68,15 @@ end
 macro pymutable(type, supertype=Any, field=:py)
     return esc(
         quote
+            using PythonCall: Py
             mutable struct $type <: $supertype
-                $field::PythonCall.Py
+                $field::Py
             end
             $(pybasic(type, field))
             # Code from https://github.com/stevengj/PythonPlot.jl/blob/d58f6c4/src/PythonPlot.jl#L77-L78
-            Base.setproperty!(x::$type, s::Symbol, v) =
-                setproperty!(PythonCall.Py(x), s, v)
+            Base.setproperty!(x::$type, s::Symbol, v) = setproperty!(Py(x), s, v)
             Base.setproperty!(x::$type, s::AbstractString, v) =
-                setproperty!(PythonCall.Py(x), Symbol(s), v)
+                setproperty!(Py(x), Symbol(s), v)
         end,
     )
 end
@@ -84,9 +84,10 @@ end
 # See https://github.com/stevengj/PythonPlot.jl/issues/19
 macro pycallable(T)
     return quote
-        PythonCall.pycall(f::$T, args...; kws...) =
-            PythonCall.pycall(PythonCall.Py(f), args...; kws...)
-        (f::$T)(args...; kws...) = PythonCall.pycall(PythonCall.Py(f), args...; kws...)
+        using PythonCall: Py
+        import PythonCall: pycall
+        pycall(f::$T, args...; kws...) = pycall(Py(f), args...; kws...)
+        (f::$T)(args...; kws...) = pycall(Py(f), args...; kws...)
     end
 end
 
