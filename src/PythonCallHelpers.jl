@@ -53,6 +53,11 @@ function pybasic(type, field)
     end
 end
 
+"""
+    @pyimmutable type [supertype] [field]
+
+Construct an immutable wrapper for a Python object, with a supertype and a default fieldname.
+"""
 macro pyimmutable(type, supertype=Any, field=:py)
     return esc(
         quote
@@ -65,6 +70,11 @@ macro pyimmutable(type, supertype=Any, field=:py)
     )
 end
 
+"""
+    @pymutable type [supertype] [field]
+
+Construct an mutable wrapper for a Python object, with a supertype and a default fieldname.
+"""
 macro pymutable(type, supertype=Any, field=:py)
     return esc(
         quote
@@ -82,6 +92,11 @@ macro pymutable(type, supertype=Any, field=:py)
 end
 
 # See https://github.com/stevengj/PythonPlot.jl/issues/19
+"""
+    @pycallable type
+
+Make an existing type callable.
+"""
 macro pycallable(T)
     return quote
         using PythonCall: Py
