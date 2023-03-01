@@ -2,9 +2,9 @@ module PythonCallHelpers
 
 using PythonCall: PythonCall, Py, pyhasattr, pyconvert, pycall
 
-export @pyobj, @pycallable
+export @pymutable, @pycallable
 
-macro pyobj(T)
+macro pymutable(T)
     return quote
         # Code from https://github.com/stevengj/PythonPlot.jl/blob/d58f6c4/src/PythonPlot.jl#L65-L72
         PythonCall.Py(f::$T) = getfield(f, :o)
