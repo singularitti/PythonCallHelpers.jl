@@ -15,19 +15,38 @@ julia&gt; Pkg.add(&quot;PythonCallHelpers&quot;)</code></pre></li><li><p>Run</p>
     Updating `~/work/PythonCallHelpers.jl/PythonCallHelpers.jl/docs/build/developers/Project.toml`
   [82926614] + PythonCallHelpers v0.1.0 `https://github.com/singularitti/PythonCallHelpers.jl#main`
     Updating `~/work/PythonCallHelpers.jl/PythonCallHelpers.jl/docs/build/developers/Manifest.toml`
+  [992eb4ea] + CondaPkg v0.2.17
+  [9a962f9c] + DataAPI v1.14.0
+  [e2d170a0] + DataValueInterfaces v1.0.0
+  [82899510] + IteratorInterfaceExtensions v1.0.0
+  [692b3bcd] + JLLWrappers v1.4.1
+  [0f8b85d8] + JSON3 v1.12.0
+  [1914dd2f] + MacroTools v0.5.10
+  [0b3b1443] + MicroMamba v0.1.12
+  [fa939f87] + Pidfile v1.3.0
+  [6099a3de] + PythonCall v0.9.12
   [82926614] + PythonCallHelpers v0.1.0 `https://github.com/singularitti/PythonCallHelpers.jl#main`
+  [ae029012] + Requires v1.3.0
+  [6c6a2e73] + Scratch v1.1.1
+  [856f2bd8] + StructTypes v1.10.0
+  [3783bdb8] + TableTraits v1.0.1
+  [bd369af6] + Tables v1.10.0
+  [e17b2a0c] + UnsafePointers v1.0.0
+  [f8abcde7] + micromamba_jll v1.3.1+0
+  [4af54fe1] + LazyArtifacts
+  [8dfed614] + Test
 Precompiling project...
 <span class="sgr33">  ✓ </span>PythonCallHelpers
-  1 dependency successfully precompiled in 0 seconds. 20 already precompiled.
+  1 dependency successfully precompiled in 0 seconds. 37 already precompiled.
   <span class="sgr33">1</span> dependency precompiled but a different version is currently loaded. Restart julia to access the new version</code></pre><p>in the second step above.</p><h2 id="Update-PythonCallHelpers"><a class="docs-heading-anchor" href="#Update-PythonCallHelpers">Update PythonCallHelpers</a><a id="Update-PythonCallHelpers-1"></a><a class="docs-heading-anchor-permalink" href="#Update-PythonCallHelpers" title="Permalink"></a></h2><p>Please <a href="https://docs.github.com/en/account-and-profile/managing-subscriptions-and-notifications-on-github/setting-up-notifications/configuring-notifications#configuring-your-watch-settings-for-an-individual-repository">watch</a> our <a href="https://github.com/singularitti/PythonCallHelpers.jl">GitHub repository</a> for new releases. Once we release a new version, you can update PythonCallHelpers by typing</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; using Pkg</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; Pkg.update(&quot;PythonCallHelpers&quot;)</code><code class="nohighlight hljs ansi" style="display:block;">    Updating registry at `~/.julia/registries/General`
     Updating git-repo `https://github.com/JuliaRegistries/General.git`
     Updating git-repo `https://github.com/singularitti/PythonCallHelpers.jl`
   No Changes to `~/work/PythonCallHelpers.jl/PythonCallHelpers.jl/docs/build/developers/Project.toml`
   No Changes to `~/work/PythonCallHelpers.jl/PythonCallHelpers.jl/docs/build/developers/Manifest.toml`</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; Pkg.gc()</code><code class="nohighlight hljs ansi" style="display:block;">      Active manifest files: 4 found
-      Active artifact files: 0 found
+      Active artifact files: 1 found
       Active scratchspaces: 0 found
      Deleted no artifacts, repos, packages or scratchspaces</code></pre><p>in the Julia REPL.</p><h2 id="Uninstall-and-reinstall-PythonCallHelpers"><a class="docs-heading-anchor" href="#Uninstall-and-reinstall-PythonCallHelpers">Uninstall and reinstall PythonCallHelpers</a><a id="Uninstall-and-reinstall-PythonCallHelpers-1"></a><a class="docs-heading-anchor-permalink" href="#Uninstall-and-reinstall-PythonCallHelpers" title="Permalink"></a></h2><p>Sometimes errors may occur if the package is not properly installed. In this case, you may want to uninstall and reinstall the package. Here is how to do that:</p><ol><li><p>To uninstall, in a Julia session, run</p><pre><code class="language-julia-repl hljs">julia&gt; using Pkg
 
 julia&gt; Pkg.rm(&quot;PythonCallHelpers&quot;)
 
-julia&gt; Pkg.gc()</code></pre></li><li><p>Press <code>ctrl+d</code> to quit the current session. Start a new Julia session and reinstall PythonCallHelpers.</p></li></ol></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.24 on <span class="colophon-date" title="Wednesday 1 March 2023 20:33">Wednesday 1 March 2023</span>. Using Julia version 1.8.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+julia&gt; Pkg.gc()</code></pre></li><li><p>Press <code>ctrl+d</code> to quit the current session. Start a new Julia session and reinstall PythonCallHelpers.</p></li></ol></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.24 on <span class="colophon-date" title="Wednesday 1 March 2023 20:40">Wednesday 1 March 2023</span>. Using Julia version 1.8.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
