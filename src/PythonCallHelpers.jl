@@ -34,6 +34,23 @@ function Base.Docs.catdoc(helps::LazyHelp...)
 end
 
 # See https://github.com/rafaqz/DimensionalData.jl/blob/4814246/src/Dimensions/dimension.jl#L382-L398
+function pybasic(type, field)
+    return quote
+        # Code from https://github.com/stevengj/PythonPlot.jl/blob/d58f6c4/src/PythonPlot.jl#L65-L72
+        PythonCall.Py(x::$type) = getfield(x, $(QuoteNode(Symbol(field))))
+        PythonCall.pyconvert(::Type{$type}, py::Py) = $type(py)
+        Base.:(==)(x::$type, y::$type) = pyconvert(Bool, Py(x) == Py(y))
+        Base.isequal(x::$type, y::$type) = isequal(Py(x), Py(y))
+        Base.hash(x::$type, h::UInt) = hash(Py(x), h)
+        Base.Docs.doc(x::$type) = Base.Docs.Text(pyconvert(String, Py(x).__doc__))
+        # Code from https://github.com/stevengj/PythonPlot.jl/blob/d58f6c4/src/PythonPlot.jl#L75-L80
+        Base.getproperty(x::$type, s::Symbol) = getproperty(Py(x), s)
+        Base.getproperty(x::$type, s::AbstractString) = getproperty(Py(x), Symbol(s))
+        Base.hasproperty(x::$type, s::Symbol) = pyhasattr(Py(x), s)
+        Base.propertynames(x::$type) = propertynames(Py(x))
+    end
+end
+
 macro pyimmutable(type, field)
     return esc(
         quote
