@@ -36,8 +36,8 @@ end
 # See https://github.com/rafaqz/DimensionalData.jl/blob/4814246/src/Dimensions/dimension.jl#L382-L398
 function pybasic(type, field)
     return quote
-        using PythonCall: pyhasattr
-        import PythonCall: Py, pyconvert
+        using $PythonCall: pyhasattr
+        import $PythonCall: Py, pyconvert
         # Code from https://github.com/stevengj/PythonPlot.jl/blob/d58f6c4/src/PythonPlot.jl#L65-L72
         Py(x::$type) = getfield(x, $(QuoteNode(Symbol(field))))
         pyconvert(::Type{$type}, py::Py) = $type(py)
@@ -61,7 +61,7 @@ Construct an immutable wrapper for a Python object, with a supertype and a defau
 macro pyimmutable(type, supertype=Any, field=:py)
     return esc(
         quote
-            using PythonCall: Py
+            using $PythonCall: Py
             struct $type <: $supertype
                 $field::Py
             end
@@ -78,7 +78,7 @@ Construct an mutable wrapper for a Python object, with a supertype and a default
 macro pymutable(type, supertype=Any, field=:py)
     return esc(
         quote
-            using PythonCall: Py
+            using $PythonCall: Py
             mutable struct $type <: $supertype
                 $field::Py
             end
@@ -99,8 +99,8 @@ Make an existing type callable.
 """
 macro pycallable(type)
     return quote
-        using PythonCall: Py
-        import PythonCall: pycall
+        using $PythonCall: Py
+        import $PythonCall: pycall
         pycall(x::$type, args...; kws...) = pycall(Py(x), args...; kws...)
         (x::$type)(args...; kws...) = pycall(Py(x), args...; kws...)
     end
