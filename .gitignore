@@ -823,6 +823,7 @@ docs/site/
 # committed for packages, but should be committed for applications that require a static
 # environment.
 Manifest.toml
+.CondaPkg/
 
 
 ### https://raw.github.com/github/gitignore/4488915eec0b3a45b5c63ead28f286819c0917de/Fortran.gitignore
