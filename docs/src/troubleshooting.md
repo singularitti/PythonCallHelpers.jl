@@ -5,8 +5,8 @@ Pages = ["troubleshooting.md"]
 Depth = 3
 ```
 
-This page collects some possible errors you may encounter and trick how to fix them.
-If you have some questions about how to use this code, you are welcome to
+This page lists possible errors you may encounter and provides tips on how to fix them.
+If you have any questions about how to use this code, feel free to
 [discuss with us](https://github.com/singularitti/PythonCallHelpers.jl/discussions).
 
 If you have additional tips, please either
@@ -17,29 +17,34 @@ If you have additional tips, please either
 
 ### Cannot find the `julia` executable
 
-Make sure you have Julia installed in your environment. Please download the latest
-[stable version](https://julialang.org/downloads/) for your platform, and it's recommended
-to do it indirectly with `juliaup` as explained on that page. If you do not want to install
-Juliaup, download the corresponding binaries.
-Then, create a symbolic link to the Julia executable. If the path is not in your `$PATH`
-environment variable, export it to your `$PATH`.
+Ensure that Julia is installed in your environment. Please download the latest
+[stable version](https://julialang.org/downloads/#current_stable_release) for your platform,
+and it's recommended to do it indirectly with
+[Juliaup](https://github.com/JuliaLang/juliaup) as explained on that page.
+
+If you prefer not to install Juliaup, download the corresponding binaries instead.
+Next, create a symbolic link to the Julia executable.
+If the path is not included in your
+[`$PATH` environment variable](https://en.wikipedia.org/wiki/PATH_(variable)), add it by
+exporting the path to `$PATH`.
 
 Some clusters, like
-[Habanero](https://confluence.columbia.edu/confluence/display/rcs/Habanero+HPC+Cluster+User+Documentation),
 [Comet](https://www.sdsc.edu/support/user_guides/comet.html),
 or [Expanse](https://www.sdsc.edu/services/hpc/expanse/index.html),
-already have Julia installed as a module, you may
-just `module load julia` to use it. If not, either install by yourself or contact your
-administrator.
+already have Julia installed as a module, you can
+just `module load julia` to use it. If not, you should either install it yourself or contact
+your system administrator.
+
+See [Installation Guide](@ref) for more information.
 
 ## Loading PythonCallHelpers
 
 ### Julia compiles/loads slow
 
-First, we recommend you download the latest version of Julia (with juliaup). Usually, the latest version
+First, we recommend downloading the latest version of Julia using Juliaup. Usually, the latest version
 has the best performance.
 
-If you just want Julia to do a simple task and only once, you could start the Julia REPL with
+For simple, one-time tasks in Julia, you can start the Julia REPL with
 
 ```bash
 julia --compile=min
