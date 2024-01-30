@@ -18,10 +18,9 @@ If you have additional tips, please either
 ### Cannot find the `julia` executable
 
 Make sure you have Julia installed in your environment. Please download the latest
-[stable version](https://julialang.org/downloads/#current_stable_release) for your platform.
-If you are using a *nix system, the recommended way is to use
-[Juliaup](https://github.com/JuliaLang/juliaup). If you do not want to install Juliaup
-or you are using other platforms that Julia supports, download the corresponding binaries.
+[stable version](https://julialang.org/downloads/) for your platform, and it's recommended
+to do it indirectly with `juliaup` as explained on that page. If you do not want to install
+Juliaup, download the corresponding binaries.
 Then, create a symbolic link to the Julia executable. If the path is not in your `$PATH`
 environment variable, export it to your `$PATH`.
 
@@ -37,7 +36,7 @@ administrator.
 
 ### Julia compiles/loads slow
 
-First, we recommend you download the latest version of Julia. Usually, the newest version
+First, we recommend you download the latest version of Julia (with juliaup). Usually, the latest version
 has the best performance.
 
 If you just want Julia to do a simple task and only once, you could start the Julia REPL with
@@ -52,8 +51,7 @@ to minimize compilation or
 julia --optimize=0
 ```
 
-to minimize optimizations, or just use both. Or you could make a system image
-and run with
+to minimize optimizations. Or you could make a system image and run with
 
 ```bash
 julia --sysimage custom-image.so
