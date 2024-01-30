@@ -8,8 +8,30 @@ for more information.
 ## Install Julia
 
 First, you should install [Julia](https://julialang.org/). We recommend downloading it from
-[its official website](https://julialang.org/downloads/). Please follow the detailed
-instructions on its website if you have to
+[its official website](https://julialang.org/downloads/).
+The recommended way is to use a version manager
+[Juliaup](https://github.com/JuliaLang/juliaup).
+
+Install the latest Julia version by running this in your terminal:
+
+```shell
+curl -fsSL https://install.julialang.org | sh
+```
+
+on Unix-type systems. For Windows users, run
+
+```shell
+winget install julia -s msstore
+```
+
+Once installed `julia` will be available via the command line interface. This will install
+the Juliaup installation manager, which will automatically install Julia and help keep it up
+to date. The command `juliaup` is also installed. To install different Julia versions see
+`juliaup --help`.
+There is a [short video introduction to Juliaup](https://youtu.be/14zfdbzq5BM)
+made by its authors.
+
+Please follow the detailed instructions on its website if you have to
 [build Julia from source](https://docs.julialang.org/en/v1/devdocs/build/build/).
 Some computing centers provide preinstalled Julia. Please contact your administrator for
 more information in that case.
@@ -33,23 +55,6 @@ brew install --cask julia
 ```
 
 instead.
-
-If you want to install multiple Julia versions in the same operating system,
-a recommended way is to use a version manager such as
-[`juliaup`](https://github.com/JuliaLang/juliaup).
-First, [install `juliaup`](https://github.com/JuliaLang/juliaup#installation).
-Then, run
-
-```shell
-juliaup add release
-juliaup default release
-```
-
-to configure the `julia` command to start the latest stable version of
-Julia (this is also the default value).
-
-There is a [short video introduction to `juliaup`](https://youtu.be/14zfdbzq5BM)
-made by its authors.
 
 ### Which version should I pick?
 
@@ -79,8 +84,8 @@ we will gradually drop support for versions below `v1.6`.
 Julia and Julia packages support multiple operating systems and CPU architectures; check
 [this table](https://julialang.org/downloads/#supported_platforms) to see if it can be
 installed on your machine. For Mac computers with M-series processors, this package and its
-dependencies may not work. Please install the Intel-compatible version of Julia (for macOS
-x86-64) if any platform-related error occurs.
+dependencies may not work. If so, please install the Intel-compatible version of Julia (for
+macOS x86-64).
 
 ## Install PythonCallHelpers
 
